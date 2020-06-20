@@ -51,14 +51,14 @@
 
                         </div>
                         <div class="form-group">
-                            <label for="parent_id">Выбор родителя</label>
+                            <label for="category_id">Выбор категории</label>
                             <select class="form-control"
-                                    id="parent_id"
-                                    name="parent_id"
+                                    id="category_id"
+                                    name="category_id"
                                     placeholder="Выбрать категорию">
                                 @foreach($categoryList as $categoryOption)
                                     <option value="{{ $categoryOption->id }}"
-                                            @if($categoryOption->id == $item->id) selected @endif>{{ $categoryOption->id_title }}</option>
+                                            @if($categoryOption->id == $item->category_id) selected @endif>{{ $categoryOption->id_title }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -77,9 +77,9 @@
                             <input name="is_published"
                                     type="checkbox"
                                     class="form-check-input"
-                                   value="{{ $item->is_published }}"
-                                   @if($item->is_published)
-                                   checked="checked"
+                                    value="1"
+                                    @if($item->is_published)
+                                    checked="checked"
                                     @endif
                             >
                             <label for="form-check-label">Опубликовано</label>
