@@ -120,30 +120,7 @@ class CategoryController extends BaseController
      */
     public function update(BlogCategoryUpdateRequest $request, $id)
     {
-        /*
-            $rules = [
-               'title' => 'required|min:5|max:200',
-               'slug' => 'max:200',
-               'description' => 'string|min:3|max:500',
-               'parent_id' => 'required|integer|exists:blog_categories,id',
-           ];
 
-           //$validatedData = $this->validate($request, $rules);
-
-           //$validatedData = $request->validate($rules);
-
-           $validator = \Validator::make($request->all(), $rules);
-           $validatedData[] = $validator->passes();
-          // $validatedData[] = $validator->validate();
-           $validatedData[] = $validator->valid();
-           $validatedData[] = $validator->failed();
-           $validatedData[] = $validator->errors();
-           $validatedData[] = $validator->fails();
-
-
-
-           dd($validatedData);
-   */
         $item = BlogCategory::find($id);
         if (empty($item)){
             return back()
