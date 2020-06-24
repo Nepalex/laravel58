@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        @include('blog.admin.posts.includes.result_messages')
         <div class="row justify-content-center">
 
             <div class="col-md-12">

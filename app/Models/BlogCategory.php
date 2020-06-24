@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class BlogCategory
@@ -66,5 +65,23 @@ class BlogCategory extends Model
      */
     public function isRoot(){
         return $this->id === BlogCategory::ROOT;
+    }
+
+    /**
+     *   Accessors Exemple
+     * @param string $valueFormObject
+     * @return bool|false|string|string[]|null
+     *
+     */
+    public function getTitleAttribute($valueFormObject){
+        return mb_strtoupper($valueFormObject);
+    }
+
+    /**
+     * Mutators example
+     * @param string $incomingValue
+     */
+    public function setTitleAttribute($incomingValue){
+        $this->attributes['title'] = mb_strtolower($incomingValue);
     }
 }

@@ -9,6 +9,7 @@ use App\Models\BlogPost;
 use App\Repositories\BlogCategoryRepository;
 use App\Repositories\BlogPostRepository;
 use Carbon\Carbon;
+use foo\bar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -162,6 +163,19 @@ class PostController extends BaseController
      */
     public function destroy($id)
     {
-        //
+        //dd(__METHOD__, $id, request()->all());
+    // soft removal, the article remains in the database
+        $result = BlogPost::destroy($id);
+
+        // complete deletion  from database
+       // $result = BlogPost::find($id)->forceDelete();
+
+        if ($result){
+            return redirect()
+                ->route('blog.admin.posts.index')
+                ->with(['success' => 'Article with id [$id] deteted successfully']);
+        }else{
+            return back()->withErrors(['msg' => 'Delete Error']);
+        }
     }
 }
