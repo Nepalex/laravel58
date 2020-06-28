@@ -29,7 +29,6 @@ class CategoryController extends BaseController
 
     public function index()
     {
-        //$paginator = BlogCategory::paginate(20);
 
         $paginator = $this->blogCategoryRepository->getAllWithPaginate(5);
 
@@ -44,7 +43,7 @@ class CategoryController extends BaseController
      */
     public function create()
     {
-        $item = new BlogCategory();
+        $item = BlogCategory()::make();
         $categoryList = $this->blogCategoryRepository->getForCombobox();
 
         return view('blog.admin.categories.edit', compact('item','categoryList'));
@@ -63,18 +62,8 @@ class CategoryController extends BaseController
         /**
          * go away to observer
          */
-//        if(empty($data['slug'])){
-//            $data['slug'] = Str::slug($data['title']);
-//        }
 
-        //Создаст объект, но не добавит в бд
-             // $item = new BlogCategory($data);
-        // Сохранение в БД через модель
-            // $item->save();
-
-        //Создаст объект и добавит в бд
-
-        $item = (new BlogCategory())->create($data);
+        $item = BlogCategory::create($data);
 
         if ($item){
             return redirect()->route('blog.admin.categories.edit', [$item->id])
@@ -96,23 +85,6 @@ class CategoryController extends BaseController
     public function edit($id)
     {
         $item = $this->blogCategoryRepository->getEdit($id);
-
-        $v['title_before'] = $item->title;
-
-        $item->title = 'ddsdvvsd JNJBD 123';
-
-        $v['title_after'] = $item->title;
-        $v['getAttribute'] = $item->getAttribute('title');
-        $v['attributesToArray'] = $item->attributesToArray();
-//        $v['attributes'] = $item->attributes['title'];
-        $v['getAttributeValue'] = $item->getAttributeValue('title');
-        $v['getMutatedAttributes'] = $item->getMutatedAttributes();
-        $v['hasGetMutator for title'] = $item->hasGetMutator('title');
-        $v['toArray'] = $item->toArray();
-
-        dd($v, $item);
-
-
 
         if (empty($item)){
             abort(404);
