@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Blog\Admin;
 use App\Http\Requests\BlogCategoryUpdateRequest;
 use App\Http\Requests\BlogPostCreateRequest;
 use App\Http\Requests\BlogPostUpdateRequest;
+use App\Jobs\BlogPostAfterCreateJob;
+use App\Jobs\BlogPostAfterDeleteJob;
 use App\Models\BlogPost;
 use App\Repositories\BlogCategoryRepository;
 use App\Repositories\BlogPostRepository;
@@ -75,6 +77,9 @@ class PostController extends BaseController
         $item = (new BlogPost())->create($data);
 
         if ($item){
+            $job = new BlogPostAfterCreateJob($item);
+            $this->dispatch($job);
+
             return redirect()->route('blog.admin.posts.edit', [$item->id])
                 ->with(['success' => 'Успешно сохранено']);
         }else{
@@ -133,15 +138,6 @@ class PostController extends BaseController
         }
         $data = $request->all();
 
-// go way to Observer
-//        if(empty($data['slug'])){
-//            $data['slug'] = Str::slug($data['title']);
-//        }
-
-//        if (empty($item->published_at) && $data['is_published']){
-//            $data['published_at'] = Carbon::now();
-//        }
-
         $result = $item->update($data);
 
         if ($result){
@@ -171,6 +167,8 @@ class PostController extends BaseController
        // $result = BlogPost::find($id)->forceDelete();
 
         if ($result){
+            BlogPostAfterDeleteJob::dispatch($id)->delay(20);
+
             return redirect()
                 ->route('blog.admin.posts.index')
                 ->with(['success' => 'Article with id [$id] deteted successfully']);
